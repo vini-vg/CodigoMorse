@@ -26,23 +26,21 @@ public class MorseBST {
     public void insert(char letter, String morseCode) {
         root = insertRecursive(root, letter, morseCode, 0);
     }
-
     private Node insertRecursive(Node current, char letter, String morseCode, int index) {
         if (current == null) {
-            if (index < morseCode.length()) {
-                current = new Node(' ');
-            } else {
-                return new Node(letter);
-            }
+            current = new Node(' ');
         }
 
-        if (index < morseCode.length()) {
-            char code = morseCode.charAt(index);
-            if (code == '.') {
-                current.left = insertRecursive(current.left, letter, morseCode, index + 1);
-            } else if (code == '-') {
-                current.right = insertRecursive(current.right, letter, morseCode, index + 1);
-            }
+        if (index == morseCode.length()) {
+            current.letter = letter;
+            return current;
+        }
+
+        char code = morseCode.charAt(index);
+        if (code == '.') {
+            current.left = insertRecursive(current.left, letter, morseCode, index + 1);
+        } else if (code == '-') {
+            current.right = insertRecursive(current.right, letter, morseCode, index + 1);
         }
 
         return current;
@@ -65,8 +63,9 @@ public class MorseBST {
     }
 
     public String decodeWord(String morseWord) {
-        String[] morseChars = morseWord.split(" ");
+        String[] morseChars = morseWord.trim().split(" ");
         StringBuilder result = new StringBuilder();
+
         for (String morseChar : morseChars) {
             result.append(decodeCharacter(morseChar));
         }
