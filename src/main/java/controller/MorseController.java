@@ -1,18 +1,16 @@
 package main.java.controller;
 
-import main.java.model.MorseBST;
 import main.java.util.MorseCodeMap;
 
 public class MorseController {
-    private MorseBST morseTree;
+    private model.MorseBST morseTree;
 
     public MorseController() {
-        morseTree = new MorseBST();
+        morseTree = new model.MorseBST();
         initializeTree();
     }
 
     private void initializeTree() {
-        // Inserir apenas letras de A-Z na árvore
         for (char c = 'A'; c <= 'Z'; c++) {
             morseTree.insert(c, MorseCodeMap.getMorseCode(c));
         }
@@ -39,7 +37,7 @@ public class MorseController {
         return morseTree.decodeWord(morseCode);
     }
 
-    public MorseBST getMorseTree() {
+    public model.MorseBST getMorseTree() {
         return morseTree;
     }
 }

@@ -8,7 +8,6 @@ public class MorseCodeMap {
     private static final Map<String, Character> morseToChar = new HashMap<>();
 
     static {
-        // Apenas alfabeto de A-Z
         charToMorse.put('A', ".-");
         charToMorse.put('B', "-...");
         charToMorse.put('C', "-.-.");
@@ -36,7 +35,6 @@ public class MorseCodeMap {
         charToMorse.put('Y', "-.--");
         charToMorse.put('Z', "--..");
 
-        // Inverte o mapa para criar morseToChar
         for (Map.Entry<Character, String> entry : charToMorse.entrySet()) {
             morseToChar.put(entry.getValue(), entry.getKey());
         }
