@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,11 +21,46 @@ public class MorseBST {
 
     public MorseBST() {
         this.root = null;
+        initializeTree();
+    }
+
+    private void initializeTree() {
+        // Construção manual da árvore Morse
+        insert('E', ".");
+        insert('T', "-");
+
+        insert('I', "..");
+        insert('A', ".-");
+        insert('N', "-.");
+        insert('M', "--");
+
+        insert('S', "...");
+        insert('U', "..-");
+        insert('R', ".-.");
+        insert('W', ".--");
+        insert('D', "-..");
+        insert('K', "-.-");
+        insert('G', "--.");
+        insert('O', "---");
+
+        insert('H', "....");
+        insert('V', "...-");
+        insert('F', "..-.");
+        insert('L', ".-..");
+        insert('P', ".--.");
+        insert('J', ".---");
+        insert('B', "-...");
+        insert('X', "-..-");
+        insert('C', "-.-.");
+        insert('Y', "-.--");
+        insert('Z', "--..");
+        insert('Q', "--.-");
     }
 
     public void insert(char letter, String morseCode) {
         root = insertRecursive(root, letter, morseCode, 0);
     }
+
     private Node insertRecursive(Node current, char letter, String morseCode, int index) {
         if (current == null) {
             current = new Node(' ');
@@ -72,15 +107,43 @@ public class MorseBST {
         return result.toString();
     }
 
-    public int getHeight() {
-        return getHeight(root);
+    public String encodeCharacter(char character) {
+        StringBuilder morseCode = new StringBuilder();
+        if (findPath(root, Character.toUpperCase(character), morseCode)) {
+            return morseCode.toString();
+        }
+        return "?";
     }
 
-    private int getHeight(Node node) {
-        if (node == null) {
-            return 0;
+    public String encode(String text) {
+        StringBuilder morse = new StringBuilder();
+        for (char c : text.toUpperCase().toCharArray()) {
+            if (c == ' ') {
+                morse.append(" ");
+            } else {
+                String code = encodeCharacter(c);
+                morse.append(code).append(" ");
+            }
         }
-        return 1 + Math.max(getHeight(node.left), getHeight(node.right));
+        return morse.toString().trim();
+    }
+
+    private boolean findPath(Node node, char target, StringBuilder path) {
+        if (node == null) return false;
+
+        if (node.letter == target) return true;
+
+        if (findPath(node.left, target, path)) {
+            path.insert(0, ".");
+            return true;
+        }
+
+        if (findPath(node.right, target, path)) {
+            path.insert(0, "-");
+            return true;
+        }
+
+        return false;
     }
 
     public void drawTree(Canvas canvas) {
@@ -110,9 +173,5 @@ public class MorseBST {
             gc.strokeLine(x, y + 15, newX, newY - 15);
             drawNode(gc, node.right, newX, newY, xOffset / 2);
         }
-    }
-
-    public boolean isEmpty() {
-        return root == null;
     }
 }
